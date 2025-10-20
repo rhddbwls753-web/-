@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>행정작용법 O/X 퀴즈 - 핵심 50선</title>
+</head>
+<body style="font-family: sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; text-align: center;">
+<div id="main-container" style="max-width: 600px; margin: 0 auto; text-align: left;">
+    <h1 style="font-size: 24px; font-weight: bold; text-align: center; color: #333; margin-bottom: 20px; border-bottom: 2px solid #ccc; padding-bottom: 10px;">
+        행정작용법 O/X 퀴즈 (핵심 50선)
+    </h1>
+
+    <!-- 퀴즈 영역 (현재 문제 + 즉시 해설) -->
+    <div id="quiz-section" style="margin-bottom: 20px;">
+        <!-- 퀴즈 내용이 여기에 렌더링됩니다. -->
+    </div>
+
+    <!-- 최종 완료 메시지 및 오답노트 버튼 영역 -->
+    <div id="completion-section" style="padding: 25px; background-color: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; display: none;">
+        <h2 style="font-size: 20px; font-weight: bold; color: #10b981; margin-bottom: 15px;">🎉 퀴즈 완료!</h2>
+        <p style="font-size: 16px; color: #555; margin-bottom: 20px;">모든 문제를 다 푸셨습니다. 틀린 문제는 오답노트에서 복습하세요!</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button id="restart-quiz-btn" style="width: 100%; padding: 12px; background-color: #4f46e5; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                퀴즈 다시 풀기
+            </button>
+            <button id="review-error-btn" style="width: 100%; padding: 12px; background-color: #f59e0b; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                오답노트 확인 (틀린 문제만)
+            </button>
+        </div>
+    </div>
+
+    <!-- 오답노트 영역 -->
+    <div id="error-note-section" style="margin-top: 20px; padding: 25px; background-color: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: none;">
+        <h2 style="font-size: 20px; font-weight: bold; color: #333; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 8px;">✍️ 오답노트</h2>
+        <div id="error-list" style="margin-top: 15px; display: flex; flex-direction: column; gap: 15px;">
+            <p id="no-errors-msg" style="color: #999; text-align: center; padding: 20px;">아직 틀린 문제가 없어요!</p>
+        </div>
+        <div style="margin-top: 20px; display: flex; gap: 10px;">
+            <button id="back-to-quiz-btn" style="flex: 1; padding: 12px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                첫 화면으로 돌아가기
+            </button>
+            <button id="reset-error-btn" style="flex: 1; padding: 12px; background-color: #6b7280; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                오답노트 초기화
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // =================================================================
+    // 1. 데이터 정의 (행정작용법 핵심 50문제)
+    // =================================================================
+    const QUESTIONS = [
+        // --- 이전 25문제 ---
+        {
+            id: 1,
+            q: "행정행위의 공정력은 행정행위에 하자가 있음에도 불구하고 권한 있는 기관에 의해 취소되기 전까지 유효하게 통용되는 효력을 말하며, 이는 행정소송법상 취소소송의 제기 기간이 도과하여도 유지된다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">공정력(Presumption of Legality)은 행정행위의 하자와 관계없이 권한 있는 기관에 의해 취소되기 전까지 잠정적으로 유효하게 통용되는 힘입니다. 이는 행정의 안정성을 위한 것이며, 취소소송 제기 기간(불가쟁력)이 도과했는지 여부와는 무관하게 효력을 유지합니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 공정력은 행정행위의 유효성을 전제로 하며, 취소소송 기간 경과 후에도 당연무효가 아닌 한 민사/형사 법원은 효력을 부인할 수 없습니다.</p>
+            `
+        },
+        {
+            id: 2,
+            q: "행정행위가 당연무효인 경우에는 공정력이 인정되지 않으므로, 이해관계인은 처분청에 취소를 구하는 절차를 거치지 않고도 그 무효를 주장할 수 있다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**무효인 행정행위**는 처음부터 아무런 법적 효력이 발생하지 않았으므로 공정력의 보호를 받지 못합니다. 따라서 누구라도 그 무효를 주장할 수 있고, 별도로 행정소송을 제기하여 취소 판결을 받을 필요가 없습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 대법원은 행정행위의 하자가 중대하고 명백하여 당연무효인 경우 공정력이 발생하지 않는다고 일관되게 판시하고 있습니다.</p>
+            `
+        },
+        {
+            id: 3,
+            q: "행정행위의 불가쟁력은 행정행위가 일단 발생한 후에 행정청이 스스로 그 행정행위를 취소하거나 철회할 수 없는 효력을 말한다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">이는 **불가변력(自縛力)**에 대한 설명입니다. **불가쟁력**은 국민이 더 이상 쟁송(취소소송 등)을 제기하여 다툴 수 없는 효력을 의미합니다. 행정청은 불가쟁력이 발생한 행정행위라도 직권으로 취소하거나 철회할 수 있습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 불가쟁력은 국민에 대한 효력이고, 불가변력은 행정청 자신에 대한 구속력입니다 (판례상 불가변력은 매우 제한적으로 인정).</p>
+            `
+        },
+        {
+            id: 4,
+            q: "대법원 판례는 재량행위가 아닌 기속행위의 경우에도 법률유보의 원칙이 적용되어 행정의 근거가 되는 법률이 있어야만 행정행위를 할 수 있다고 본다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**법률유보의 원칙**은 행정권의 발동에 법률의 근거가 필요하다는 원칙으로, **권력작용(행정행위)은 기속행위든 재량행위든 불문**하고 적용됩니다. 다만, 침익적 행정행위일수록 법률의 구체적인 근거가 더 강하게 요구됩니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 법률유보 원칙은 권력작용 전반에 적용되며, 법률우위 원칙은 모든 행정작용에 적용되는 차이가 있습니다.</p>
+            `
+        },
+        {
+            id: 5,
+            q: "취소소송의 제기 기간이 도과하여 불가쟁력이 발생한 행정처분이라도, 그 처분의 위법성을 선결문제로 하여 민사소송에서 다툴 수 있다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**불가쟁력**이 발생하더라도, **행정행위의 위법성**은 민사소송 등에서 선결문제로 다루어질 수 있습니다. 다만, 민사법원은 행정행위의 효력 유무를 직접 판단할 수는 없고, 손해배상 청구 등에서 위법성만 판단할 수 있습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 대법원은 민사소송에서 행정처분의 위법성 여부를 심사할 수 있으나, 그 처분을 무효로 선언하거나 취소할 수는 없다고 판시했습니다. (공정력과 선결문제의 관계)</p>
+            `
+        },
+        {
+            id: 6,
+            q: "행정행위에 붙이는 부관 중 부담(조건)은 독립된 행정행위로 보아 그 자체를 취소소송의 대상으로 삼을 수 있다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**부관(조건)** 중에서도 **부담**은 주된 행정행위와 분리되어 그 자체만으로 의무를 부과하는 독립된 성질을 가지므로, 독립하여 행정소송의 대상이 될 수 있다는 것이 판례의 확립된 태도입니다. 반면, 조건, 기한, 철회권의 유보 등은 주된 행정행위와 결합하여 전체로서 쟁송의 대상이 됩니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 부담은 독립된 처분성을 인정하여 취소소송의 대상으로 삼을 수 있습니다. (부담의 독립 쟁송 가능성)</p>
+            `
+        },
+        {
+            id: 7,
+            q: "재량행위에 부관을 붙이는 것은 원칙적으로 법률에 명시적 근거가 없더라도 허용되나, 기속행위에는 반드시 법률상 근거가 있어야 한다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**재량행위**는 행정청에게 행위 여부나 내용 선택의 자유가 있으므로, 별도의 법적 근거 없이도 그 재량의 범위 내에서 부관을 붙일 수 있습니다(재량의 내재적 근거). 그러나 **기속행위**는 법에 엄격하게 규정되어 있으므로, 예외적으로 부관을 붙이려면 법률의 명시적인 근거가 필요합니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 재량행위 부관의 허용성은 행정의 탄력성과 효율성을 확보하기 위한 것입니다.</p>
+            `
+        },
+        {
+            id: 8,
+            q: "행정청이 수익적 행정행위를 철회하는 경우, 이는 후발적 사유에 의한 것이므로 신뢰보호의 원칙이 적용되지 않아 법률상 근거 없이도 자유롭게 할 수 있다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**철회**는 비록 후발적 사유에 의한 것이지만, 이미 부여된 수익적 권리를 박탈하는 것이므로 **신뢰보호의 원칙**이 가장 강력하게 적용됩니다. 따라서 철회 시 반드시 공익상의 필요와 사익(신뢰 이익)을 비교형량해야 하며, 비례의 원칙에 위반되지 않아야 합니다. 법적 근거가 없더라도 가능하지만, 자유롭지는 않습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 철회는 비록 법적 근거가 없어도 가능하나, 신뢰보호의 원칙과 비례의 원칙을 위반하면 위법합니다.</p>
+            `
+        },
+        {
+            id: 9,
+            q: "행정청이 도시계획을 입안·결정하는 행정계획 결정은 원칙적으로 광범위한 형성의 자유를 가지므로, 형량명령의 원칙 위반 여부는 심사 대상이 되지 않는다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">행정계획에는 **계획재량**이라는 광범위한 재량이 인정되지만, 이는 무제한이 아닙니다. 행정청은 계획을 수립할 때 관련되는 공익과 사익을 정당하게 비교형량해야 합니다. 이를 **형량명령의 원칙**이라고 하며, 이 원칙을 위반한 경우 그 계획 결정은 위법하게 됩니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 대법원은 형량명령의 원칙 위반 여부를 행정계획의 위법성 판단 기준으로 확립하고 있습니다.</p>
+            `
+        },
+        {
+            id: 10,
+            q: "행정입법 부작위에 대해 국민이 구체적인 권리나 의무에 직접적인 영향을 받는 경우라도, 부작위위법확인소송의 대상이 될 수 없다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**부작위위법확인소송**의 대상이 되는 부작위는 **'처분'**에 대한 신청에 대한 거부나 부작위여야 합니다. 행정입법(법규명령 등)의 제정은 일반적으로 '처분'이 아니므로, 입법 부작위는 부작위위법확인소송의 대상이 될 수 없습니다. (헌법소원의 대상은 될 수 있음)</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 행정소송법상 '처분' 개념에 행정입법은 포함되지 않습니다.</p>
+            `
+        },
+        {
+            id: 11,
+            q: "법규명령 형식의 행정규칙(법령보충적 행정규칙)은 상위법령의 구체적인 위임 범위 내에서 대외적 구속력을 가지며, 국민의 권리·의무에 직접 영향을 미친다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**법령보충적 행정규칙**은 형식적으로는 행정규칙이지만, 상위 법령의 위임에 따라 그 내용을 보충하는 기능을 하므로, 상위 법령과 결합하여 **대외적 법규성(국민 구속력)**을 가집니다. 이는 판례가 일관되게 인정하는 부분입니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 대통령령, 부령 등 법규명령 형식이 아니더라도 상위 법령의 위임에 따라 법규적 사항을 정하는 경우 법규성을 인정합니다.</p>
+            `
+        },
+        {
+            id: 12,
+            q: "재량준칙(행정규칙)이 반복적으로 시행되어 평등의 원칙 및 신뢰보호의 원칙에 따라 대외적 구속력을 가지게 되는 경우, 이를 **자기구속의 법리**라고 한다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">행정청이 재량권을 행사할 때 스스로 정한 준칙(재량준칙)에 따라 반복적으로 처분을 하여 관행이 형성되면, 평등의 원칙 및 신뢰보호의 원칙에 따라 후속 처분에서도 그 준칙에 구속됩니다. 이것이 **행정의 자기구속의 법리**이며, 이를 통해 재량준칙도 간접적으로 대외적 구속력을 가질 수 있습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 자기구속의 법리는 평등의 원칙에서 파생되며, 행정의 일관성을 확보하는 데 기여합니다.</p>
+            `
+        },
+        {
+            id: 13,
+            q: "행정지도는 상대방의 임의적인 협력을 전제로 하므로, 행정지도가 위법하더라도 그 상대방은 행정소송을 제기하여 다툴 수 없다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**행정지도**는 원칙적으로 비권력적 사실행위이므로 처분성이 부정되나, 예외적으로 행정지도가 **실질적으로 상대방의 의사를 구속하는 정도의 강제성**을 띠거나, 그에 따름으로써 권리·의무에 직접적인 영향을 미치는 경우 **처분성이 인정**되어 행정소송의 대상이 될 수 있습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 건축 계획 사전 결정 시 행정지도 형식으로 변경을 요구했더라도 실질적으로 거부된 것과 같다고 보아 처분성을 인정한 판례가 있습니다.</p>
+            `
+        },
+        {
+            id: 14,
+            q: "공법상 계약은 행정주체와 사인(私人) 간에 대등한 지위에서 체결되는 공법적 효과를 목적으로 하는 계약이므로, 계약의 내용에 공권력의 행사가 포함될 수 없다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**공법상 계약**은 당사자 간의 대등한 합의를 전제로 합니다. 만약 계약의 내용에 일방적인 우월적 지위를 이용한 **공권력의 행사**가 포함된다면 이는 계약이 아닌 행정행위로 보아야 합니다. 계약은 행정행위의 대체적 수단입니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 공법상 계약의 특징은 **당사자의 대등성**입니다. 우월적 지위에서 이루어지는 행위는 행정행위입니다.</p>
+            `
+        },
+        {
+            id: 15,
+            q: "행정계획은 행정청의 광범위한 재량이 인정되는 영역이므로, 계획이 확정된 후 이를 변경하는 경우 이해관계인은 아무런 권리가 없다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">행정계획이 확정되면 이해관계인은 그 계획의 존속에 대한 **신뢰 이익**을 가질 수 있습니다. 특히 계획의 변경으로 인해 손해를 입게 되는 경우, **계획보장청구권** 등 법적 구제 수단이 인정될 수 있으며, 행정청은 계획 변경 시에도 형량명령의 원칙을 지켜야 합니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 대법원은 일정 요건 하에 행정계획 변경 신청권을 인정하여 계획 변경 거부 행위의 처분성을 인정하기도 합니다.</p>
+            `
+        },
+        {
+            id: 16,
+            q: "행정행위의 하자의 치유는 국민의 권리 구제에 불리하므로, 판례는 원칙적으로 하자의 치유를 인정하지 않는다는 입장을 견지하고 있다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">판례는 **국민의 권리나 이익을 침해하지 않는 범위 내에서** 행정의 안정성과 행정 경제를 위해 **일정한 하자의 치유**를 인정하고 있습니다. 다만, 하자의 치유는 원칙적으로 허용되지 않으며, 적법한 사유가 **행정쟁송 제기 이전에** 보완되어야 합니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 판례는 주로 절차상의 경미한 하자에 대해 치유를 인정하며, 내용상 중대한 하자는 치유할 수 없다고 봅니다.</p>
+            `
+        },
+        {
+            id: 17,
+            q: "수익적 행정행위의 하자를 이유로 행정청이 직권취소하는 경우, 신뢰보호의 원칙상 침해되는 사인의 이익과 달성하려는 공익을 비교형량해야 한다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**직권취소**는 행정청이 스스로 그 행정행위의 효력을 장래 또는 소급하여 소멸시키는 행위입니다. 특히 수익적 행정행위를 취소할 때는 **신뢰보호의 원칙**이 적용되므로, 취소로 인해 침해되는 개인의 신뢰 이익보다 취소를 통해 달성하려는 공익이 훨씬 클 때에만 취소가 정당화될 수 있습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 대법원은 이익형량을 하지 않거나 공익이 현저히 작을 경우 직권취소는 위법하다고 판시합니다.</p>
+            `
+        },
+        {
+            id: 18,
+            q: "행정대집행은 의무불이행이 있을 때만 가능하며, 대체적 작위의무에 한하여 인정되므로, 부작위의무의 위반에 대해서는 대집행이 인정될 수 없다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**행정대집행**은 **대체적 작위의무**의 불이행 시에만 허용되는 강제집행 수단입니다. 부작위의무(무엇을 하지 않을 의무)나 비대체적 작위의무의 불이행에 대해서는 행정대집행이 아닌 **이행강제금, 직접강제** 등의 다른 수단을 사용해야 합니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 대집행은 '대체성'이 핵심입니다. (예: 불법 건축물 철거 의무)</p>
+            `
+        },
+        {
+            id: 19,
+            q: "행정조사는 임의조사가 원칙이므로, 조사 대상자가 정당한 이유 없이 조사를 거부하더라도 행정청은 벌칙을 부과할 수 없다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**행정조사기본법**은 행정조사가 임의조사임을 원칙으로 하지만, 조사 대상자가 조사에 응하지 않는 경우 행정청은 관계 법령에 따라 **과태료 부과 등의 벌칙**을 부과할 수 있습니다. 이는 실효성 확보를 위한 조치입니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 법령]</strong> 행정조사기본법 제27조(조사 거부 등의 금지) 및 관련 벌칙 규정.</p>
+            `
+        },
+        {
+            id: 20,
+            q: "행정행위의 효력발생시기는 원칙적으로 상대방에게 고지한 때(도달주의)이며, 고지하기 전이라도 행정청의 내부적인 의사결정만으로 효력이 발생한다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">행정행위는 원칙적으로 **도달주의**에 따라 **상대방에게 도달한 때**에 효력이 발생합니다. 행정청의 내부적인 의사결정(결재)만으로는 효력이 발생하지 않으며, 이를 외부에 표시하고 도달시켜야 합니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 법령]</strong> 행정절차법 제15조(송달의 효력발생) 참조.</p>
+            `
+        },
+        {
+            id: 21,
+            q: "무효확인소송은 그 성질상 처분의 효력을 다투는 취소소송과는 달리 제소기간의 제한을 받지 않으나, 소의 이익이 있어야 제기할 수 있다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**무효인 행정행위**는 법적으로 효력이 없으므로, **무효확인소송**은 취소소송과 달리 제소기간(90일, 1년)의 적용을 받지 않습니다. 하지만 행정소송은 법률상 쟁송이므로, 원고에게 **소의 이익(법률상 이익)**이 있어야 소를 제기할 수 있습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 무효확인소송은 보충성이 요구되지는 않으나, 소의 이익은 반드시 요구됩니다.</p>
+            `
+        },
+        {
+            id: 22,
+            q: "행정청이 인가(認可)를 해주는 행정행위는 기본 행위의 법적 효력을 완성시켜 주는 보충 행위이므로, 인가 처분 자체의 위법을 이유로 취소소송을 제기할 수 없다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**인가**는 기본 행위(예: 조합 설립 총회 결의)를 보충하여 그 법적 효력을 완성시키는 행위이지만, **인가 처분 자체도 독립된 행정행위**입니다. 따라서 인가 처분에 고유한 하자가 있다면, 기본 행위와 별도로 인가 처분을 대상으로 취소소송을 제기할 수 있습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 기본 행위의 하자는 민사소송으로, 인가 처분의 하자는 행정소송으로 다툽니다. (하자의 승계 이론과 관련)</p>
+            `
+        },
+        {
+            id: 23,
+            q: "법률의 위임 없이 제정된 법규명령이 국민의 권리·의무에 관한 내용을 정하고 있더라도, 그것이 집행을 위한 세부 사항을 규정한 것이라면 유효하다고 보아야 한다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">국민의 **권리·의무에 관한 사항**은 **법률유보의 원칙**이 가장 강력하게 적용되므로, 반드시 **법률의 구체적이고 개별적인 위임**이 있어야만 법규명령으로 정할 수 있습니다. 위임 없이 제정된 법규명령은 위법하여 무효입니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 헌법 제75조(위임입법의 한계)와 포괄위임 금지 원칙이 적용됩니다.</p>
+            `
+        },
+        {
+            id: 24,
+            q: "공법상 부당이득 반환청구소송은 공법상의 원인에 의한 것이므로, 행정소송법상의 당사자소송으로 제기해야 한다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**공법상 부당이득 반환청구소송**은 공법상의 법률관계에 관한 것이지만, 행정소송법상 그 소송형태에 대한 명시적인 규정이 없습니다. 판례는 이를 **당사자소송**이 아닌 **민사소송**으로 보고 있습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 과오납된 세금 환급 청구 등은 민사소송 절차에 따라야 한다는 것이 대법원의 일관된 입장입니다.</p>
+            `
+        },
+        {
+            id: 25,
+            q: "행정의 자기구속의 법리가 적용되기 위해서는 행정규칙이 있어야 하며, 단순한 행정관행만으로는 자기구속의 법리가 발생할 수 없다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**행정의 자기구속의 법리**는 행정규칙뿐만 아니라 **재량권 행사의 단순한 관행(선례)**이 반복된 경우에도 발생할 수 있습니다. 중요한 것은 '동종의 사안'에 대한 '반복적인 선례'가 존재하여 **평등의 원칙**이 적용될 여지가 생기는 것입니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 자기구속의 법리는 행정규칙의 형식적 존재 여부보다는 실질적인 관행 형성 여부에 달려 있습니다.</p>
+            `
+        },
+        
+        // --- 추가 25문제 (총 50문제) ---
+        {
+            id: 26,
+            q: "조세 부과처분(선행 행위)의 하자가 중대하고 명백하여 무효라고 하더라도, 후행하는 체납처분(압류 등)은 별개의 처분이므로 하자가 승계되어 당연히 무효가 되는 것은 아니다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**하자의 승계**에 대한 예외가 적용됩니다. 선행 처분인 **조세 부과처분**이 **당연무효**인 경우에는 그 하자가 후행 처분인 **체납처분**에도 승계되어 체납처분 역시 무효가 됩니다. 다만, 선행 처분이 단순히 취소할 수 있는 하자인 경우에는 승계가 부정됩니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 선행처분이 무효이면 후행처분도 무효입니다. (하자의 승계, 무효인 경우)</p>
+            `
+        },
+        {
+            id: 27,
+            q: "행정청이 인가(認可) 처분을 할 때 인가의 대상인 기본 행위에 하자가 있는 경우, 인가 처분의 위법성을 다투기 위해서는 기본 행위에 대한 취소소송을 제기해야 한다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**인가**는 기본 행위의 효력을 보충하는 행위입니다. **기본 행위의 하자는 민사소송**으로 다투어야 하며, **인가 처분 자체의 하자는 행정소송**으로 다투어야 합니다. 인가 처분을 다투는 것만으로 기본 행위의 하자를 다툴 수 없습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 기본 행위의 하자는 사법상 또는 공법상 법률관계에 관한 것이므로, 인가와 분리하여 별도로 다투어야 합니다.</p>
+            `
+        },
+        {
+            id: 28,
+            q: "부관 중 기한(기한이 도래하면 효력이 소멸)을 붙인 수익적 행정행위의 경우, 그 기한이 부당하게 짧은 경우에도 행정청의 재량에 속하므로 사법심사의 대상이 될 수 없다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">기한이 부당하게 짧아 행정행위의 본질적 효력을 해치는 경우, 이는 **재량권 일탈·남용**에 해당하여 위법합니다. 이 경우 기한은 **부관이 아닌 법정 기한**으로 해석되거나, 또는 **부관 전체가 위법**으로 취소될 수 있습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 대법원은 면허에 붙인 기한이 그 면허의 성격상 부당하게 짧은 경우, 기한 연장 거부의 처분성을 인정했습니다. (재량의 한계)</p>
+            `
+        },
+        {
+            id: 29,
+            q: "행정청이 도시계획을 결정할 때 환경적 요소를 고려하지 않고 오직 경제적 이익만을 고려한 경우, 이는 형량 해태에 해당하여 위법하다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**형량명령의 원칙**은 행정계획 수립 시 관련 공익과 사익을 '정당하게' 형량해야 한다는 원칙입니다. 필요한 이익을 아예 고려하지 않은 경우(**형량 해태**)나, 형량 대상이 아닌 것을 고려한 경우(**오형량**) 모두 위법의 사유가 됩니다. 환경적 요소는 공익으로서 필수적인 고려 대상입니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 계획 재량은 광범위하나, 형량 해태, 오형량, 형량 불균형은 위법성을 초래합니다.</p>
+            `
+        },
+        {
+            id: 30,
+            q: "국가공무원법상 직위해제는 공무원의 신분은 유지하면서 직무 수행만을 일시적으로 정지시키는 행위이므로, 행정소송의 대상인 처분으로 볼 수 없다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**직위해제**는 공무원의 권익에 중대한 영향을 미치며, 그 해제 자체가 행정청의 일방적인 공권력 행사입니다. 비록 신분은 유지되지만, 그로 인해 불이익이 발생하므로 **처분성**이 인정됩니다. (징계는 아님)</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 직위해제, 대기 발령 등은 공무원 관계에 중대한 영향을 미치는 권력적 사실행위 또는 행정행위로 보아 처분성을 인정합니다.</p>
+            `
+        },
+        {
+            id: 31,
+            q: "행정기관이 내부적으로 공무원에게 발령한 '훈령'이 상위 법규의 위임 없이 국민의 권리·의무에 관한 내용을 담고 있다면, 법규명령으로서의 효력이 있다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**훈령**은 행정규칙의 일종으로, 원칙적으로 행정조직 내부만을 규율합니다. **법규명령**으로서 효력을 가지려면 반드시 **법규명령의 형식**을 갖추거나(예: 대통령령, 부령), **상위 법령의 구체적인 위임**을 받아 그 내용을 보충하는 '법령보충적 행정규칙'이어야 합니다. 훈령은 둘 다 해당하지 않습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 법규명령은 대외적 구속력을 가지며, 훈령은 내부적 구속력만을 가집니다.</p>
+            `
+        },
+        {
+            id: 32,
+            q: "국민의 신뢰보호를 위한 행정청의 공적인 견해 표명은 반드시 문서로 이루어져야 하며, 구두나 묵시적인 방법으로는 인정되지 않는다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**공적인 견해 표명**은 반드시 문서로 한정되지 않습니다. 판례는 담당 공무원의 발언, 공적인 회의에서의 발언, 심지어 **묵시적인 태도**에서도 신뢰보호의 대상이 되는 공적 견해 표명을 인정하기도 합니다. 중요한 것은 **행정청의 실질적인 의사**가 외부적으로 표시되었는지 여부입니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 비록 공적 견해 표명이 있었더라도, 행정청의 정당한 처분을 기대할 수 없는 사정이 있었다면 신뢰보호는 인정되지 않습니다.</p>
+            `
+        },
+        {
+            id: 33,
+            q: "법률의 근거가 없는 경우에도 중대한 공익상의 필요가 있다면, 행정청은 이미 발급된 허가(수익적 행정행위)를 철회할 수 있다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**행정행위의 철회**는 철회권의 유보, 상대방의 귀책사유, 그리고 **중대한 공익상의 필요**가 있는 경우 법률에 별도의 근거가 없더라도 허용됩니다. 다만, 이 경우에도 **신뢰보호 및 비례의 원칙**을 위반해서는 안 됩니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 철회는 행정행위의 사후적 통제 수단이며, 법률유보의 원칙이 엄격하게 적용되지 않는 경우가 많습니다.</p>
+            `
+        },
+        {
+            id: 34,
+            q: "부관 중 사후부관(행정행위 효력 발생 후 부관을 새로 붙이는 행위)은 원칙적으로 허용되지 않으며, 법률에 명시적 근거가 있는 경우에만 예외적으로 가능하다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**사후부관**은 원칙적으로 허용되지 않으나, **법률에 근거**가 있거나, **상대방의 동의**가 있는 경우, 또는 **사정변경**으로 인해 부관을 새로 붙여야 할 특별한 사유가 생긴 경우 **예외적으로 허용**됩니다. 법률 근거만 있는 것은 아닙니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 부관은 행정행위 발령 시에 붙이는 것이 원칙입니다. 사후 부관은 수익자에게 예측하지 못한 불이익을 줄 수 있기 때문입니다.</p>
+            `
+        },
+        {
+            id: 35,
+            q: "부당결부금지의 원칙은 행정작용이 실질적인 관련성이 없는 사항을 결부시켜서는 안 된다는 원칙이며, 이 원칙은 오직 행정행위의 부관에만 적용된다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**부당결부금지의 원칙**은 행정의 모든 영역(행정행위, 행정계획, 공법상 계약 등)에 적용되는 **일반적인 행정법의 일반원칙**입니다. 주로 부관에서 문제가 되지만, 부관에만 한정되지 않습니다. (예: 공법상 계약에서도 부당한 조건을 요구하는 것은 위반)</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 위법한 부당결부의 예: 건축허가를 해주면서 해당 사업과 무관한 공익사업에 필요한 토지 기부를 요구하는 경우.</p>
+            `
+        },
+        {
+            id: 36,
+            q: "운전면허 처분은 대인적 성질의 허가이므로, 면허 정지나 취소 처분이 상대방에게 도달하였는지 여부와 관계없이 처분 시점부터 효력이 발생한다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">행정행위의 효력 발생은 성질에 관계없이 **도달주의**가 원칙입니다 (**행정절차법 제15조**). 운전면허 취소/정지 처분 역시 상대방에게 고지(송달)되어 **도달한 때**부터 효력이 발생합니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 법령]</strong> 대인적 허가라고 하여 효력 발생 시기에 대한 예외가 적용되지는 않습니다.</p>
+            `
+        },
+        {
+            id: 37,
+            q: "법률의 근거 없이도 공익상 필요한 경우 행정청은 국민에게 새로운 공법상 의무를 부과하는 행정행위를 할 수 있다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**침익적 행정행위** (국민의 권리를 제한하거나 의무를 부과하는 행위)는 **법률유보의 원칙**이 가장 엄격하게 적용됩니다. 따라서 아무리 공익상 필요하더라도 법률에 명확한 근거 없이는 새로운 의무를 부과할 수 없습니다. (침해유보설)</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 법률유보의 원칙은 특히 침익적 행정에서 강력히 요구됩니다.</p>
+            `
+        },
+        {
+            id: 38,
+            q: "행정의 내부 질서만을 규율하는 행정규칙은 법규성이 없으므로, 행정소송에서 그 위법 여부를 판단하는 기준으로 삼을 수 없다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**행정규칙**은 원칙적으로 행정조직 내부의 기준을 정하는 것이므로 **대외적 법규성(국민 구속력)**이 없습니다. 따라서 처분이 행정규칙에 위반되었다고 하더라도, 그 처분 자체가 상위 법령에 위반되지 않는 한 **위법하다고 할 수 없습니다** (단, 자기구속의 법리가 적용되는 재량준칙은 예외적으로 다툼의 기준이 될 수 있음).</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 법규성이 없는 행정규칙 위반은 행정처분의 직접적인 위법 사유가 되지 않습니다.</p>
+            `
+        },
+        {
+            id: 39,
+            q: "행정상 강제징수는 국민에게 의무를 부과하는 행정행위(납세고지)가 유효하게 성립한 후에만 가능하며, 당연무효인 처분에 근거한 강제징수는 허용되지 않는다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**강제징수(체납처분)**는 행정행위의 집행 단계에 해당하며, 적법하고 유효한 **처분** (세금 부과, 납부 독촉 등)을 전제로 합니다. 따라서 선행 처분이 당연무효인 경우에는 강제징수 절차를 개시할 근거 자체가 없어 무효가 됩니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 행정상 강제집행은 적법한 선행 행정행위의 존재를 요건으로 합니다.</p>
+            `
+        },
+        {
+            id: 40,
+            q: "주민등록 신고(수리 행위)의 경우, 행정청의 수리 처분은 신고의 효력 발생 요건이 되므로, 신고 자체에 하자가 있다면 수리 처분의 무효를 주장해야 한다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**주민등록 신고**는 **수리를 요하는 신고**로서, 수리 처분이 있어야 효력이 발생합니다. 따라서 신고에 하자가 있다면 수리 처분이 위법해지므로, **수리 처분** 자체를 행정소송으로 다투어 취소시켜야 합니다. 신고 자체의 무효를 주장하는 것은 일반적인 소송대상이 아닙니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 판례는 수리를 요하는 신고의 경우, 신고서 반려 행위 및 수리 거부 행위에 처분성을 인정합니다.</p>
+            `
+        },
+        {
+            id: 41,
+            q: "행정의 신뢰보호의 원칙상 보호되는 사인의 신뢰 이익은 위법한 행정행위에 대한 신뢰의 경우에도 언제나 보호되어야 한다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">신뢰보호의 대상이 되는 신뢰는 **정당한 신뢰**여야 합니다. 사인이 행정청의 견해 표명이 위법하다는 것을 알았거나 중대한 과실로 알지 못한 경우에는 **보호 가치가 있는 신뢰**로 인정되지 않습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 귀책사유 있는 사인의 신뢰는 보호되지 않으며, 귀책사유 유무는 사인이 관계 공무원의 잘못을 알았는지 여부뿐만 아니라 알 수 있었는지 여부도 함께 고려하여 판단합니다.</p>
+            `
+        },
+        {
+            id: 42,
+            q: "행정계획을 수립할 때, 장래의 환경 변화에 대응하기 위해 광범위한 예측과 판단이 필요하므로, 법원은 행정계획에 대한 재량의 한계를 엄격하게 심사해야 한다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">행정계획은 **계획재량**이라는 광범위한 재량이 인정됩니다. 법원은 행정청의 예측 판단에 대해 **엄격한 심사**가 아닌, **합리성 통제** 수준의 **완화된 심사**를 적용하는 것이 원칙입니다. (형량명령의 원칙 위반 여부 중심)</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 법원은 행정계획의 위법 여부를 판단할 때 행정청의 전문성과 합목적성을 존중합니다.</p>
+            `
+        },
+        {
+            id: 43,
+            q: "허가(許可)는 법령에 의해 금지된 행위를 해제하여 적법하게 할 수 있도록 하는 행정행위이며, 허가는 원칙적으로 기속행위이다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**허가(허가)**는 법률에 특별한 규정이 없는 한, 신청이 법적 요건을 충족하면 행정청이 반드시 허가를 내주어야 하는 **기속행위**가 원칙입니다. 다만, 법규에서 '허가할 수 있다' 등 재량적 표현을 쓰면 재량행위가 될 수 있습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 법령에 금지된 행위의 해제인 허가는 국민의 자유 회복을 위한 것이므로 기속행위성이 강합니다.</p>
+            `
+        },
+        {
+            id: 44,
+            q: "행정청이 인가(認可) 처분을 할 때, 인가에 붙인 부관이 위법한 경우에도 부관을 제외한 나머지 인가 처분은 유효하다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**일부취소의 법리**가 적용됩니다. 행정행위의 일부인 부관만이 위법한 경우, 그 부관만 분리하여 취소할 수 있는 것이 원칙입니다. 다만, 부관이 없었다면 행정행위 자체를 하지 않았을 것이라는 **특단의 사정**이 인정되면 전체가 취소됩니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 판례]</strong> 부관의 독립적인 쟁송 가능성 및 일부 취소 가능성을 인정합니다.</p>
+            `
+        },
+        {
+            id: 45,
+            q: "행정행위의 효력이 소급하여 소멸되는 취소와 달리, 철회는 장래에 향하여 효력을 소멸시키는 것이 원칙이다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**취소**는 행정행위 성립 시의 하자를 이유로 하므로 원칙적으로 **소급효**가 있습니다. 반면, **철회**는 행정행위 성립 후의 후발적 사유(예: 법령 변경, 공익적 필요)를 이유로 하므로 원칙적으로 **장래효**가 인정됩니다. 이는 신뢰보호의 원칙을 고려한 것입니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 취소와 철회의 가장 큰 차이점은 효력 소멸의 시점입니다 (소급효 vs. 장래효).</p>
+            `
+        },
+        {
+            id: 46,
+            q: "공법상 사실행위 중에서도 단순한 비권력적 사실행위(예: 상담, 자료 제공)는 행정소송의 대상이 될 수 없다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**행정소송의 대상**은 '처분 등'이어야 합니다. 비권력적 사실행위 중 단순한 정보 제공, 상담 등은 국민의 권리·의무에 직접적인 영향을 미치지 않으므로 **처분성이 부정**되어 행정소송의 대상이 될 수 없습니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 행정소송은 국민의 권리·의무에 직접 영향을 미치는 '권력적' 행위에 집중됩니다.</p>
+            `
+        },
+        {
+            id: 47,
+            q: "행정상 강제집행 중 **직접강제**는 비대체적 작위의무 또는 부작위의무의 불이행 시에만 사용되며, 법률에 명확한 근거가 있어야 한다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**직접강제**는 행정청이 의무자에게 직접 물리력을 행사하여 의무 이행을 실현하는 것으로, 국민의 신체나 재산에 직접적인 침해를 가하므로 **최후의 수단**으로 사용됩니다. 따라서 **법률유보의 원칙**이 엄격하게 적용되어 개별 법률에 명확한 근거가 있어야 합니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 직접강제는 이행강제금, 대집행 등 다른 수단으로 의무 이행이 불가능할 때만 예외적으로 사용됩니다.</p>
+            `
+        },
+        {
+            id: 48,
+            q: "헌법재판소는 법규명령에 대한 구체적 규범 통제는 재판의 전제가 된 경우에만 가능하며, 추상적 규범 통제는 원칙적으로 인정하지 않는다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">우리나라는 행정소송 절차에서 법규명령의 위헌/위법 여부를 심사하는 **구체적 규범 통제**를 원칙으로 합니다. 법규명령 그 자체만을 독립적으로 다투는 **추상적 규범 통제**는 원칙적으로 허용되지 않습니다. (다만, 헌법소원 심판을 통한 예외적 통제는 가능함)</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 법령]</strong> 헌법 제107조 제2항(대법원의 규범 통제권) 참조.</p>
+            `
+        },
+        {
+            id: 49,
+            q: "행정행위의 부관 중 **법률효과의 일부 배제**는 행정행위의 내용상의 일부를 이루는 것으로 보므로, 독립된 쟁송의 대상이 될 수 없다.",
+            a: 'O',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (O)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**법률효과의 일부 배제**는 행정행위의 내용 자체를 형성하는 부관이므로, 주된 행정행위와 분리될 수 없습니다. 따라서 부담(독립된 의무)과 달리, 이 부관만을 독립적으로 떼어내어 취소소송을 제기할 수 없습니다. 전체 행정행위를 대상으로 해야 합니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 부관의 독립 쟁송 가능성은 오직 부담에 한정되는 것이 일반적입니다.</p>
+            `
+        },
+        {
+            id: 50,
+            q: "행정의 공법상 계약은 사법상의 계약에 관한 규정이 준용될 수 없으며, 반드시 공법 고유의 원칙(예: 비례의 원칙)에 따라서만 판단되어야 한다.",
+            a: 'X',
+            exp: `
+                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #059669;">정답 해설 (X)</p>
+                <p style="margin-bottom: 10px; color: #444; line-height: 1.5;">**공법상 계약**은 공법적 효과를 목적으로 하지만, 그 계약의 성질에 반하지 않는 한 **사법(민법)상의 계약에 관한 규정**이 **준용**될 수 있습니다. 다만, 공법상 계약이므로 공법의 일반 원칙(비례, 평등, 신뢰보호 등) 역시 준수되어야 합니다.</p>
+                <p style="margin-top: 8px; font-size: 12px; color: #666;"><strong>[핵심 원칙]</strong> 공법상 계약은 공법과 사법의 원리가 교차하는 영역입니다.</p>
+            `
+        }
+    ];
+
+    // =================================================================
+    // 2. 전역 변수 및 DOM 요소 (이하 코드 동일)
+    // =================================================================
+
+    let currentQuestionIndex = 0;
+    
+    const $quizSection = document.getElementById('quiz-section');
+    const $completionSection = document.getElementById('completion-section');
+    const $errorNoteSection = document.getElementById('error-note-section');
+    const $errorList = document.getElementById('error-list');
+    const $noErrorsMsg = document.getElementById('no-errors-msg');
+
+    // =================================================================
+    // 3. 오답노트 (LocalStorage) 관련 함수 (이하 코드 동일)
+    // =================================================================
+
+    /** 오답노트를 localStorage에서 불러옵니다. */
+    function getErrorNote() {
+        try {
+            const stored = localStorage.getItem('admin_law_quiz_errors');
+            return stored ? JSON.parse(stored) : [];
+        } catch (e) {
+            console.error("Error reading localStorage:", e);
+            return [];
+        }
+    }
+
+    /** 오답노트에 틀린 문제를 저장합니다. */
+    function saveErrorNote(errorItem) {
+        const errors = getErrorNote();
+        // 이미 오답노트에 있는 문제인지 확인 (중복 저장 방지)
+        const exists = errors.some(item => item.id === errorItem.id);
+        if (!exists) {
+            errors.push(errorItem);
+            try {
+                localStorage.setItem('admin_law_quiz_errors', JSON.stringify(errors));
+            } catch (e) {
+                console.error("Error writing to localStorage:", e);
+            }
+        }
+    }
+
+    /** 오답노트를 완전히 초기화합니다. */
+    function clearErrorNote() {
+        try {
+            localStorage.removeItem('admin_law_quiz_errors');
+            renderErrorNote(); 
+            alertMessage('오답노트가 성공적으로 초기화되었습니다.', '#10b981');
+        } catch (e) {
+            console.error("Error clearing localStorage:", e);
+            alertMessage('오답노트 초기화에 실패했습니다.', '#ef4444');
+        }
+    }
+    
+    // =================================================================
+    // 4. UI 및 로직 함수 (이하 코드 동일)
+    // =================================================================
+
+    /** 커스텀 알림 메시지를 화면 하단에 표시합니다 (alert() 대체). */
+    function alertMessage(message, bgColor) {
+        let $msgBox = document.getElementById('custom-alert-box');
+        if (!$msgBox) {
+            $msgBox = document.createElement('div');
+            $msgBox.id = 'custom-alert-box';
+            $msgBox.style = 'position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; text-align: center; color: white; font-weight: bold; z-index: 1000; transform: translateY(100%); transition: transform 0.3s ease-in-out; border-top-left-radius: 8px; border-top-right-radius: 8px;';
+            document.body.appendChild($msgBox);
+        }
+        
+        $msgBox.style.backgroundColor = bgColor;
+        $msgBox.textContent = message;
+        $msgBox.style.transform = 'translateY(0)';
+
+        setTimeout(() => {
+            $msgBox.style.transform = 'translateY(100%)';
+        }, 2500); 
+    }
+
+
+    /** 현재 문제를 화면에 렌더링합니다. */
+    function renderQuestion() {
+        if (currentQuestionIndex >= QUESTIONS.length) {
+            showCompletion();
+            return;
+        }
+
+        const qData = QUESTIONS[currentQuestionIndex];
+        
+        // O/X 버튼의 기본 스타일
+        const btnStyle = "width: 48%; padding: 12px; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background-color 0.2s, transform 0.1s;";
+        const btnOStyle = "background-color: #3b82f6;"; // Blue
+        const btnXStyle = "background-color: #ef4444;"; // Red
+
+        $quizSection.innerHTML = `
+            <div id="question-card-${qData.id}" style="padding: 20px; background-color: #fff; border: 1px solid #ddd; border-top: 4px solid #3b82f6; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <span style="font-size: 18px; font-weight: bold; color: #3b82f6;">${currentQuestionIndex + 1} / ${QUESTIONS.length}</span>
+                    <span style="font-size: 12px; color: #999;">행정작용법</span>
+                </div>
+                <p style="font-size: 16px; font-weight: 500; color: #333; margin-bottom: 20px; line-height: 1.6;">
+                    ${qData.q}
+                </p>
+                
+                <!-- O/X 옵션 컨테이너 -->
+                <div id="options-container" style="display: flex; justify-content: space-between; gap: 10px;">
+                    <button onclick="handleAnswer('O')" style="${btnStyle} ${btnOStyle}">
+                        O
+                    </button>
+                    <button onclick="handleAnswer('X')" style="${btnStyle} ${btnXStyle}">
+                        X
+                    </button>
+                </div>
+
+                <!-- 즉시 해설 컨테이너 (초기 숨김) -->
+                <div id="feedback-container" style="margin-top: 15px; display: none;">
+                    <!-- 해설 내용이 여기에 채워집니다 -->
+                </div>
+            </div>
+        `;
+
+        // 모든 섹션 숨김 후 퀴즈 섹션만 표시
+        $completionSection.style.display = 'none';
+        $errorNoteSection.style.display = 'none';
+        $quizSection.style.display = 'block';
+    }
+
+    /** 사용자의 답변을 처리하고 즉시 피드백을 표시합니다. */
+    window.handleAnswer = function(answer) {
+        const qData = QUESTIONS[currentQuestionIndex];
+        const isCorrect = (answer === qData.a);
+        
+        const $card = document.getElementById(`question-card-${qData.id}`);
+        const $options = document.getElementById('options-container');
+        const $feedback = document.getElementById('feedback-container');
+
+        // 1. O/X 버튼 비활성화
+        $options.querySelectorAll('button').forEach(btn => {
+            btn.setAttribute('disabled', 'true');
+            btn.style.opacity = '0.6';
+        });
+
+        // 2. 정답/오답 처리 및 오답노트 저장
+        let resultText, resultIcon, bgColor, borderColor, resultColor, nextBtnText;
+        
+        if (isCorrect) {
+            resultText = '정답입니다! 🎉';
+            resultIcon = '✅';
+            bgColor = '#ecfdf5'; // Green-50
+            borderColor = '#10b981'; // Green-500
+            resultColor = '#059669'; // Green-700
+        } else {
+            resultText = '오답입니다. 🥲';
+            resultIcon = '❌';
+            bgColor = '#fef2f2'; // Red-50
+            borderColor = '#ef4444'; // Red-500
+            resultColor = '#b91c1c'; // Red-700
+            saveErrorNote(qData); // 오답노트에 저장
+        }
+
+        alertMessage(resultText, borderColor);
+        
+        // 3. 카드 스타일 변경
+        $card.style.borderColor = borderColor;
+
+        // 다음 문제 버튼 텍스트 설정
+        if (currentQuestionIndex + 1 < QUESTIONS.length) {
+            nextBtnText = `다음 문제로 이동 (${currentQuestionIndex + 2} / ${QUESTIONS.length})`;
+        } else {
+            nextBtnText = '퀴즈 완료 및 결과 확인';
+        }
+
+
+        // 4. 즉시 해설 내용 채우기
+        const explanationStyle = "padding: 10px; font-size: 14px; color: #444; line-height: 1.5; border-left: 5px solid #10b981; background-color: #fff;";
+
+        $feedback.innerHTML = `
+            <div style="padding: 15px; border-radius: 6px; background-color: ${bgColor}; border: 1px solid ${borderColor}; margin-bottom: 15px;">
+                <p style="font-size: 18px; font-weight: bold; color: ${resultColor}; margin-bottom: 8px;">${resultIcon} ${resultText}</p>
+                <p style="font-size: 14px; color: #555;">정답: <span style="font-weight: bold;">${qData.a}</span> | 나의 선택: <span style="font-weight: bold;">${answer}</span></p>
+            </div>
+            <div style="${explanationStyle}">
+                <h5 style="font-weight: bold; color: #059669; margin-bottom: 5px; font-size: 15px;">상세 해설 및 판례</h5>
+                ${qData.exp}
+            </div>
+            <button onclick="goToNextQuestion()" style="width: 100%; margin-top: 15px; padding: 12px; background-color: #4f46e5; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                ${nextBtnText}
+            </button>
+        `;
+
+        // 5. 해설 표시
+        $feedback.style.display = 'block';
+    }
+
+    /** 다음 문제로 이동합니다. */
+    window.goToNextQuestion = function() {
+        currentQuestionIndex++;
+        renderQuestion();
+    }
+
+    /** 퀴즈 완료 화면을 표시합니다. */
+    function showCompletion() {
+        $quizSection.style.display = 'none';
+        $completionSection.style.display = 'block';
+        $errorNoteSection.style.display = 'none';
+    }
+
+    /** 오답노트 화면을 렌더링합니다. */
+    function renderErrorNote() {
+        $quizSection.style.display = 'none';
+        $completionSection.style.display = 'none';
+        $errorNoteSection.style.display = 'block';
+
+        const errors = getErrorNote();
+        $errorList.innerHTML = '';
+        
+        if (errors.length === 0) {
+            $noErrorsMsg.style.display = 'block';
+            document.getElementById('reset-error-btn').style.display = 'none';
+            return;
+        }
+
+        $noErrorsMsg.style.display = 'none';
+        document.getElementById('reset-error-btn').style.display = 'block';
+
+        $errorList.innerHTML = errors.map((q, index) => `
+            <div style="padding: 15px; background-color: #fff; border: 1px solid #fca5a5; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <h4 style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: #b91c1c;">
+                    ${index + 1}. 틀린 문제 (정답: ${q.a})
+                </h4>
+                <p style="font-size: 14px; color: #444; margin-bottom: 10px; line-height: 1.5;">
+                    ${q.q}
+                </p>
+                <div style="padding: 10px; font-size: 12px; color: #444; line-height: 1.4; border-left: 5px solid #ef4444; background-color: #fef2f2;">
+                    <h5 style="font-weight: bold; color: #b91c1c; margin-bottom: 5px;">상세 해설 (복습)</h5>
+                    ${q.exp}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    /** 초기 화면으로 돌아갑니다. */
+    function restartQuiz() {
+        currentQuestionIndex = 0;
+        renderQuestion();
+    }
+
+    // =================================================================
+    // 5. 이벤트 리스너 등록 (이하 코드 동일)
+    // =================================================================
+
+    document.getElementById('restart-quiz-btn').addEventListener('click', restartQuiz);
+    document.getElementById('review-error-btn').addEventListener('click', renderErrorNote);
+    document.getElementById('back-to-quiz-btn').addEventListener('click', restartQuiz);
+    document.getElementById('reset-error-btn').addEventListener('click', clearErrorNote);
+    
+
+    // =================================================================
+    // 6. 초기 실행 (이하 코드 동일)
+    // =================================================================
+
+    window.onload = function() {
+        restartQuiz(); // 초기 화면 렌더링
+    };
+
+</script>
+
+</body>
+</html>
