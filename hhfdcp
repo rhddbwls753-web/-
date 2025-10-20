@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>행정작용법 OX 퀴즈 100제</title>
+<!-- Tailwind CSS CDN 로드 (수정 완료: 올바른 주소 사용) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+/* Inter 폰트 사용 설정 및 기본 스타일 */
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #f7f9fc;
+}
+.container {
+    max-width: 768px; /* 태블릿 크기까지 확장 */
+}
+.question-text-style {
+    /* 질문 텍스트 스타일 */
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.hidden {
+    display: none;
+}
+/* 모달 배경 스타일 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+</style>
+</head>
+<body class="p-4 sm:p-6 min-h-screen flex justify-center items-start pt-10">
+
+<div id="app" class="container w-full bg-white shadow-2xl rounded-xl p-6 sm:p-8">
+    <!-- Header and Scoreboard -->
+    <header class="text-center mb-6 border-b pb-4">
+        <h1 class="text-3xl font-extrabold text-blue-800">행정작용법 OX 퀴즈 100제</h1>
+        <p id="score" class="mt-2 text-lg font-medium text-gray-600">
+            진행: <span id="current-index">0</span> / <span id="total-questions">0</span> | 정답: <span id="correct-count" class="text-green-600">0</span>개 | 오답: <span id="incorrect-count" class="text-red-600">0</span>개
+        </p>
+    </header>
+
+    <!-- Quiz Area -->
+    <main id="quiz-area">
+        <!-- Question Card -->
+        <div class="bg-blue-50 border-2 border-blue-200 p-6 rounded-2xl shadow-lg mb-8">
+            <p id="question-id" class="text-xl font-bold text-blue-700 mb-3">문제 0.</p>
+            <div class="question-text-style bg-white p-4 rounded-xl shadow-inner border border-blue-100">
+                <p id="question-text" class="text-xl text-gray-800 font-medium leading-relaxed">퀴즈를 시작하려면 '시작하기' 버튼을 누르세요.</p>
+            </div>
+        </div>
+
+        <!-- Answer Buttons -->
+        <div id="answer-buttons" class="grid grid-cols-2 gap-4">
+            <button id="btn-o" class="p-4 text-2xl font-extrabold text-white bg-green-500 rounded-xl shadow-lg hover:bg-green-600 transition duration-150 transform hover:scale-[1.02] active:scale-[0.98]">O</button>
+            <button id="btn-x" class="p-4 text-2xl font-extrabold text-white bg-red-500 rounded-xl shadow-lg hover:bg-red-600 transition duration-150 transform hover:scale-[1.02] active:scale-[0.98]">X</button>
+        </div>
+
+        <!-- Result/Explanation Area -->
+        <div id="result-area" class="mt-6 p-4 rounded-xl hidden transition-all duration-300">
+            <p id="result-message" class="text-lg font-semibold mb-2"></p>
+            <details class="bg-gray-100 p-3 rounded-lg border border-gray-300">
+                <summary class="font-medium text-blue-600 cursor-pointer">해설 보기</summary>
+                <p id="explanation-text" class="text-sm mt-2 text-gray-700 leading-relaxed"></p>
+                <p id="precedent-text" class="text-xs text-gray-500 italic mt-2 pt-2 border-t"></p>
+            </details>
+        </div>
+        
+        <!-- Navigation Button -->
+        <div class="mt-6 flex justify-end">
+            <button id="btn-next" class="p-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-150 transform hover:scale-105 active:scale-95 hidden">다음 문제 &rarr;</button>
+        </div>
+    </main>
+    
+    <!-- Initial Start / End Screen -->
+    <div id="start-end-screen" class="text-center p-8">
+        <h2 id="final-message" class="text-2xl font-bold text-gray-700 mb-6">퀴즈를 시작합니다.</h2>
+        <button id="btn-start" class="p-4 text-xl font-bold text-white bg-blue-600 rounded-xl shadow-lg hover:bg-blue-700 transition duration-150 transform hover:scale-[1.05] active:scale-95">시작하기 (100문제)</button>
+        <button id="btn-review-incorrect" class="p-4 text-xl font-bold text-white bg-red-600 rounded-xl shadow-lg hover:bg-red-700 transition duration-150 transform hover:scale-[1.05] active:scale-95 mt-4 hidden">오답 노트 복습 시작</button>
+        <button id="btn-show-incorrect" class="p-4 text-xl font-bold text-red-600 border border-red-600 bg-white rounded-xl shadow-lg hover:bg-red-50 transition duration-150 transform hover:scale-[1.02] active:scale-95 mt-4 hidden">오답 노트 보기</button>
+    </div>
+
+</div>
+
+<!-- 오답 노트 모달 -->
+<div id="incorrect-note-modal" class="modal-overlay hidden">
+    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-2xl w-11/12 max-w-lg max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-100">
+        <h2 class="text-2xl font-bold text-red-700 border-b pb-3 mb-4">오답 노트</h2>
+        <div id="incorrect-list" class="space-y-4">
+            <!-- 오답 목록이 여기에 삽입됩니다. -->
+        </div>
+        <div id="no-incorrect" class="text-center p-8 bg-gray-50 rounded-lg hidden">
+            <p class="text-lg text-gray-600 font-medium">현재 오답이 없습니다. 훌륭해요!</p>
+        </div>
+        <div class="mt-6 flex justify-end space-x-3">
+            <button onclick="closeIncorrectNote()" class="p-3 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition">닫기</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    // Firebase Imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Firestore Debugging
+    setLogLevel('debug');
+
+    // Global variables from Canvas environment
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+    // Firebase Initialization
+    let app, db, auth;
+    let userId = null;
+    let isAuthReady = false;
+
+    if (Object.keys(firebaseConfig).length > 0) {
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            
+            // Authentication
+            async function authenticate() {
+                try {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    userId = auth.currentUser?.uid || crypto.randomUUID();
+                    isAuthReady = true;
+                    console.log("Firebase Auth Ready. User ID:", userId);
+                    loadUserData(); // 인증 후 데이터 로드 시작
+                } catch (error) {
+                    console.error("Firebase 인증 실패:", error);
+                    userId = crypto.randomUUID(); // 익명 사용자 ID 생성
+                    isAuthReady = true;
+                    loadUserData(); // 실패해도 퀴즈는 진행할 수 있도록 데이터 로드 시도
+                }
+            }
+            authenticate();
+        } catch (error) {
+            console.error("Firebase 초기화 오류:", error);
+        }
+    } else {
+        console.warn("Firebase 설정이 제공되지 않았습니다. 데이터를 저장/로드할 수 없습니다.");
+        isAuthReady = true;
+        userId = crypto.randomUUID();
+    }
+
+
+    // --- 퀴즈 데이터 및 상태 ---
+    const questions = [
+        { id: 1, q: "행정청이 대집행 계고를 할 때 문서에 의한 통지는 반드시 필요하다. (판례)", a: false, explanation: "판례는 행정대집행 계고의 통지가 상대방에게 도달된 이상 문서에 의하지 아니하였다 하더라도 위법하다고 볼 수 없다고 합니다.", precedent: "대법원 1999. 4. 27. 선고 99두1286 판결" },
+        { id: 2, q: "재량행위에 있어서도 법규가 정하는 요건을 충족하면 반드시 기속행위로 바뀐다.", a: false, explanation: "재량행위는 원칙적으로 기속행위로 바뀌지 않습니다. 다만, 행정규칙 등에 의해 재량이 0으로 수축되는 경우는 있습니다.", precedent: "재량권의 영으로의 수축" },
+        { id: 3, q: "행정의 공정력은 행정행위가 위법하더라도 권한 있는 기관에 의해 취소될 때까지 유효한 것으로 통용되는 힘을 말한다.", a: true, explanation: "공정력은 행정행위가 비록 위법하더라도 당연무효가 아닌 한, 권한 있는 기관에 의해 취소되기 전까지 유효하게 존재하는 것으로 취급되는 효력입니다.", precedent: "공정력의 개념" },
+        { id: 4, q: "건축허가에 붙은 기한이 그 사업의 성격상 부당하게 짧은 경우, 그 기한은 건축허가 자체의 존속기간이 아닌 허가조건의 존속기간으로 본다.", a: true, explanation: "판례는 그 기한을 '부관' 중 하나인 부담이 아니라 '허가 자체의 존속기간'으로 보며, 조건이 아닌 종기로 해석합니다. 다만 그 기간이 부당하게 짧은 경우, 갱신 기간으로 봅니다.", precedent: "대법원 2007. 9. 6. 선고 2007두8154 판결" },
+        { id: 5, q: "행정청이 수익적 행정행위를 하면서 사전에 상대방과 협약을 체결하였다면, 행정행위에 대한 철회권은 유보된 것으로 보아야 한다.", a: false, explanation: "수익적 행정행위의 철회는 법적 근거가 있거나 철회권이 유보된 경우, 또는 철회할 중대한 공익상의 필요가 있는 경우에 한하여 가능하며, 단순히 협약을 체결했다고 하여 철회권이 유보되는 것은 아닙니다.", precedent: "철회의 법적 근거" },
+        // 샘플 문제 추가
+        { id: 6, q: "행정상 강제집행의 종류에는 대집행, 이행강제금, 직접강제, 강제징수가 있다.", a: true, explanation: "행정상 강제집행은 행정대집행, 이행강제금(집행벌), 직접강제, 강제징수의 네 가지 유형으로 구분됩니다.", precedent: "행정상 강제집행의 종류" },
+        { id: 7, q: "행정지도에 불응하였다는 이유만으로 상대방에게 불이익한 조치를 하여서는 안 된다는 원칙은 신뢰보호의 원칙에 해당한다.", a: false, explanation: "이는 행정절차법상 행정지도의 한계에 관한 규정이며, '비례의 원칙' 또는 '행정지도의 임의성의 원칙'과 관련이 깊습니다. 신뢰보호의 원칙과는 직접적인 관련이 적습니다.", precedent: "행정절차법 제48조(행정지도의 한계)" },
+        { id: 8, q: "무효인 행정행위에는 공정력이 인정되지 않는다.", a: true, explanation: "공정력은 행정행위가 비록 위법하더라도 당연무효가 아닌 한, 취소되기 전까지 유효하게 존재하는 것으로 취급하는 효력입니다. 당연무효인 행정행위에는 처음부터 아무런 효력이 발생하지 않으므로 공정력이 인정될 여지가 없습니다.", precedent: "공정력과 무효" },
+        { id: 9, q: "부관 중 부담은 행정행위와는 별개로 독립하여 행정쟁송의 대상이 될 수 있다.", a: true, explanation: "부관 중 부담(의무 부과)은 독립된 행정행위로서의 성격을 가지므로, 그 자체만으로 취소소송 등 행정쟁송의 대상이 될 수 있습니다.", precedent: "부담의 독립 쟁송 가능성" },
+        { id: 10, q: "행정절차법은 처분의 사전 통지 시 당사자가 의견 제출 기한 내에 의견 제출을 하지 않은 경우 청문을 실시하도록 의무화하고 있다.", a: false, explanation: "의견 제출 기한 내 의견을 제출하지 않은 경우 반드시 청문을 실시해야 하는 것은 아닙니다. 청문은 법령에서 규정하거나 필요하다고 인정할 때 실시합니다.", precedent: "행정절차법상 청문" },
+    ];
+    
+    let currentQuestions = [...questions]; // 실제 퀴즈에 사용되는 문제 배열 (복습 시 변경됨)
+    let currentQuestionIndex = 0; // 현재 문제 인덱스 (0부터 시작)
+    let correctCount = 0;
+    let incorrectCount = 0;
+    let incorrectQuestions = []; // 오답 저장 배열
+
+    // --- DOM 요소 ---
+    const scoreEl = document.getElementById('score');
+    const currentIndexEl = document.getElementById('current-index');
+    const totalQuestionsEl = document.getElementById('total-questions');
+    const correctCountEl = document.getElementById('correct-count');
+    const incorrectCountEl = document.getElementById('incorrect-count');
+    const questionIdEl = document.getElementById('question-id');
+    const questionTextEl = document.getElementById('question-text');
+    const btnO = document.getElementById('btn-o');
+    const btnX = document.getElementById('btn-x');
+    const answerButtons = document.getElementById('answer-buttons');
+    const resultArea = document.getElementById('result-area');
+    const resultMessageEl = document.getElementById('result-message');
+    const explanationTextEl = document.getElementById('explanation-text');
+    const precedentTextEl = document.getElementById('precedent-text');
+    const btnNext = document.getElementById('btn-next');
+    const quizArea = document.getElementById('quiz-area');
+    const startEndScreen = document.getElementById('start-end-screen');
+    const finalMessageEl = document.getElementById('final-message');
+    const btnStart = document.getElementById('btn-start');
+    const btnReviewIncorrect = document.getElementById('btn-review-incorrect');
+    const btnShowIncorrect = document.getElementById('btn-show-incorrect');
+    
+    // 오답 노트 모달 관련
+    const incorrectNoteModal = document.getElementById('incorrect-note-modal');
+    const incorrectListEl = document.getElementById('incorrect-list');
+    const noIncorrectEl = document.getElementById('no-incorrect');
+
+    // --- Firestore 데이터 관리 함수 ---
+
+    /**
+     * Firestore에서 사용자 데이터를 로드하고 오답 노트를 초기화합니다.
+     */
+    async function loadUserData() {
+        if (!isAuthReady) {
+            console.log("인증 준비가 되지 않았습니다. 데이터 로드 보류.");
+            return;
+        }
+        
+        const docRef = doc(db, "artifacts", appId, "users", userId, "quiz_data", "incorrect_note");
+        try {
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                // Firestore에 저장된 JSON 문자열을 파싱
+                incorrectQuestions = JSON.parse(data.incorrectQuestionsJson || '[]');
+                console.log("오답 노트 로드 성공:", incorrectQuestions.length, "개");
+            } else {
+                console.log("오답 노트 데이터 없음. 새 노트 시작.");
+            }
+        } catch (error) {
+            console.error("오답 노트 로드 중 오류 발생:", error);
+            // 오류 발생 시 로컬에서 빈 배열로 시작
+            incorrectQuestions = [];
+        }
+        updateEndScreenButtons(); // 데이터 로드 후 버튼 상태 업데이트
+    }
+    
+    /**
+     * 현재 오답 노트를 Firestore에 저장합니다.
+     */
+    async function saveUserData() {
+        if (!isAuthReady) {
+            console.log("인증 준비가 되지 않아 오답 노트를 저장할 수 없습니다.");
+            return;
+        }
+
+        const docRef = doc(db, "artifacts", appId, "users", userId, "quiz_data", "incorrect_note");
+        // Firestore에 저장하기 위해 배열을 JSON 문자열로 직렬화
+        const incorrectQuestionsJson = JSON.stringify(incorrectQuestions);
+
+        try {
+            await setDoc(docRef, { 
+                incorrectQuestionsJson: incorrectQuestionsJson,
+                updatedAt: new Date().toISOString()
+            }, { merge: true });
+            console.log("오답 노트 저장 성공:", incorrectQuestions.length, "개");
+        } catch (error) {
+            console.error("오답 노트 저장 중 오류 발생:", error);
+        }
+    }
+
+    // --- 퀴즈 로직 함수 ---
+
+    /**
+     * 퀴즈 시작 상태로 UI를 초기화합니다.
+     * @param {Array} questionsToUse - 퀴즈에 사용할 문제 배열
+     * @param {boolean} isReview - 복습 모드인지 여부
+     */
+    function startQuiz(questionsToUse = questions, isReview = false) {
+        currentQuestions = questionsToUse;
+        currentQuestionIndex = 0;
+        correctCount = 0;
+        incorrectCount = 0;
+        
+        // 복습 모드가 아닐 때만 전체 오답 노트 배열 초기화 (새로운 퀴즈 시작)
+        if (!isReview) {
+            // Note: 실제 오답 노트 배열은 save/load를 위해 유지하고, 여기서 카운트만 초기화
+        }
+
+        totalQuestionsEl.textContent = currentQuestions.length;
+        quizArea.classList.remove('hidden');
+        startEndScreen.classList.add('hidden');
+
+        loadQuestion();
+        updateScoreboard();
+    }
+
+    /**
+     * 다음 문제 로드 및 UI 업데이트
+     */
+    function loadQuestion() {
+        if (currentQuestionIndex >= currentQuestions.length) {
+            showEndScreen();
+            return;
+        }
+
+        const currentQ = currentQuestions[currentQuestionIndex];
+        
+        // UI 초기화
+        questionIdEl.textContent = `문제 ${currentQ.id}.`;
+        questionTextEl.textContent = currentQ.q;
+        resultArea.classList.add('hidden');
+        btnNext.classList.add('hidden');
+        btnO.classList.remove('bg-gray-400', 'hover:bg-gray-400', 'bg-green-700', 'bg-red-700');
+        btnX.classList.remove('bg-gray-400', 'hover:bg-gray-400', 'bg-green-700', 'bg-red-700');
+        btnO.classList.add('bg-green-500', 'hover:bg-green-600');
+        btnX.classList.add('bg-red-500', 'hover:bg-red-600');
+        btnO.disabled = false;
+        btnX.disabled = false;
+        
+        currentIndexEl.textContent = currentQuestionIndex + 1;
+    }
+
+    /**
+     * 답변 제출 및 정답 확인
+     * @param {boolean} userAnswer - 사용자가 선택한 답변 (O: true, X: false)
+     */
+    function submitAnswer(userAnswer) {
+        const currentQ = currentQuestions[currentQuestionIndex];
+        const isCorrect = (userAnswer === currentQ.a);
+        
+        btnO.disabled = true;
+        btnX.disabled = true;
+
+        // 버튼 색상 변경 (선택된 버튼을 강조)
+        if (userAnswer) { // O를 선택했을 때
+            btnO.classList.remove('bg-green-500', 'hover:bg-green-600');
+            btnO.classList.add(isCorrect ? 'bg-green-700' : 'bg-red-700');
+            btnX.classList.add('bg-gray-400');
+            btnX.classList.remove('bg-red-500', 'hover:bg-red-600');
+        } else { // X를 선택했을 때
+            btnX.classList.remove('bg-red-500', 'hover:bg-red-600');
+            btnX.classList.add(isCorrect ? 'bg-green-700' : 'bg-red-700');
+            btnO.classList.add('bg-gray-400');
+            btnO.classList.remove('bg-green-500', 'hover:bg-green-600');
+        }
+
+        if (isCorrect) {
+            correctCount++;
+            resultMessageEl.textContent = "정답입니다! 😊";
+            resultArea.className = 'mt-6 p-4 rounded-xl bg-green-100 border border-green-300 transition-all duration-300';
+        } else {
+            incorrectCount++;
+            resultMessageEl.textContent = "오답입니다. 😥 (정답: " + (currentQ.a ? 'O' : 'X') + ")";
+            resultArea.className = 'mt-6 p-4 rounded-xl bg-red-100 border border-red-300 transition-all duration-300';
+            
+            // 오답 노트에 추가 (중복 방지)
+            const exists = incorrectQuestions.some(q => q.id === currentQ.id);
+            if (!exists) {
+                incorrectQuestions.push(currentQ);
+                saveUserData(); // 오답 발생 시 즉시 저장 시도
+            }
+        }
+        
+        // 해설 표시
+        explanationTextEl.textContent = currentQ.explanation;
+        precedentTextEl.textContent = `[판례/개념] ${currentQ.precedent}`;
+        resultArea.classList.remove('hidden');
+        btnNext.classList.remove('hidden');
+        
+        updateScoreboard();
+    }
+    
+    /**
+     * 다음 문제로 넘어감
+     */
+    function nextQuestion() {
+        currentQuestionIndex++;
+        loadQuestion();
+    }
+
+    /**
+     * 점수판 업데이트
+     */
+    function updateScoreboard() {
+        correctCountEl.textContent = correctCount;
+        incorrectCountEl.textContent = incorrectCount;
+    }
+    
+    /**
+     * 퀴즈 종료 화면 표시
+     */
+    function showEndScreen() {
+        quizArea.classList.add('hidden');
+        startEndScreen.classList.remove('hidden');
+        
+        const total = currentQuestions.length;
+        const percentage = total > 0 ? ((correctCount / total) * 100).toFixed(1) : 0;
+        
+        finalMessageEl.innerHTML = `
+            <p class="text-3xl font-extrabold text-blue-800 mb-4">🎉 퀴즈 종료! 🎉</p>
+            <p class="text-2xl font-semibold text-gray-700">총 ${total}문제 중 <span class="text-green-600">${correctCount}개</span> 정답!</p>
+            <p class="text-xl font-medium text-gray-500 mt-2">정답률: <span class="text-blue-600">${percentage}%</span></p>
+        `;
+        
+        // 오답 노트 버튼 업데이트
+        updateEndScreenButtons();
+    }
+    
+    /**
+     * 오답 노트 관련 버튼의 표시 여부를 업데이트합니다.
+     */
+    function updateEndScreenButtons() {
+        if (incorrectQuestions.length > 0) {
+            btnShowIncorrect.classList.remove('hidden');
+            btnReviewIncorrect.classList.remove('hidden');
+        } else {
+            btnShowIncorrect.classList.add('hidden');
+            btnReviewIncorrect.classList.add('hidden');
+        }
+        // 시작 버튼은 항상 표시
+        btnStart.textContent = "다시 시작하기 (전체)";
+    }
+
+
+    /**
+     * 오답 노트 모달을 표시하고 내용을 채웁니다.
+     */
+    window.showIncorrectNote = function showIncorrectNote() {
+        closeIncorrectNote(); // 기존 모달 닫기
+        incorrectNoteModal.classList.remove('hidden');
+        incorrectListEl.innerHTML = ''; // 기존 목록 초기화
+
+        if (incorrectQuestions.length === 0) {
+            noIncorrectEl.classList.remove('hidden');
+        } else {
+            noIncorrectEl.classList.add('hidden');
+            incorrectQuestions.forEach((q, index) => {
+                const item = document.createElement('div');
+                item.className = 'border p-4 rounded-xl bg-red-50 shadow-md';
+                item.innerHTML = `
+                    <p class="font-semibold text-red-600 text-lg">문제 ${q.id}. (정답: ${q.a ? 'O' : 'X'})</p>
+                    <p class="mt-1 text-gray-800 text-base">${q.q}</p>
+                    <details class="mt-3 bg-white p-3 rounded-lg border border-red-200">
+                        <summary class="font-medium text-blue-600 cursor-pointer">상세 해설 보기</summary>
+                        <p class="text-sm mt-2 text-gray-700 leading-relaxed">${q.explanation}</p>
+                        <p class="text-xs text-gray-500 italic mt-2 pt-2 border-t">[판례/개념] ${q.precedent}</p>
+                    </details>
+                `;
+                incorrectListEl.appendChild(item);
+            });
+        }
+    }
+
+    /**
+     * 오답 노트 모달을 닫습니다.
+     */
+    window.closeIncorrectNote = function closeIncorrectNote() {
+        incorrectNoteModal.classList.add('hidden');
+    }
+
+    /**
+     * 오답 문제만으로 복습 퀴즈를 시작합니다.
+     */
+    function reviewIncorrectQuestions() {
+        if (incorrectQuestions.length > 0) {
+            // 오답 문제만으로 새로운 퀴즈 시작
+            startQuiz(incorrectQuestions, true); 
+        } else {
+            // 오답이 없을 경우 모달 표시
+            showIncorrectNote();
+        }
+    }
+
+    // --- 이벤트 리스너 ---
+    btnO.addEventListener('click', () => submitAnswer(true));
+    btnX.addEventListener('click', () => submitAnswer(false));
+    btnNext.addEventListener('click', nextQuestion);
+    btnStart.addEventListener('click', () => startQuiz(questions));
+    btnShowIncorrect.addEventListener('click', showIncorrectNote);
+    btnReviewIncorrect.addEventListener('click', reviewIncorrectQuestions);
+    
+    // 초기 로드 시 시작 화면 표시
+    window.onload = function() {
+        quizArea.classList.add('hidden');
+        startEndScreen.classList.remove('hidden');
+        totalQuestionsEl.textContent = questions.length;
+        updateEndScreenButtons();
+    }
+    
+</script>
+</body>
+</html>
